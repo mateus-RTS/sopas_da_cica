@@ -296,6 +296,28 @@
 
 <button class="btn-gerar" onclick="gerarCard()">✨ Gerar card</button>
 
+<div style="margin: 20px 20px 0; background:#fff; border: 2px solid #E8C8A0; border-radius:16px; padding: 20px 18px;">
+  <div style="font-size:13px; font-weight:800; color:#8B4513; letter-spacing:1px; text-transform:uppercase; margin-bottom:16px;">Como salvar e mandar</div>
+  <div style="display:flex; flex-direction:column; gap:14px;">
+    <div style="display:flex; align-items:center; gap:14px;">
+      <div style="width:36px; height:36px; border-radius:50%; background:#C8622A; color:#fff; font-size:16px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0;">1</div>
+      <div style="font-size:16px; font-weight:600; color:#2C1A0E; line-height:1.4;">Aperte o botão laranja<br><span style="color:#8B4513; font-weight:400; font-size:14px;">o card vai aparecer aqui embaixo</span></div>
+    </div>
+    <div style="display:flex; align-items:center; gap:14px;">
+      <div style="width:36px; height:36px; border-radius:50%; background:#C8622A; color:#fff; font-size:16px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0;">2</div>
+      <div style="font-size:16px; font-weight:600; color:#2C1A0E; line-height:1.4;">Segure o dedo na imagem<br><span style="color:#8B4513; font-weight:400; font-size:14px;">até aparecer um menu na tela</span></div>
+    </div>
+    <div style="display:flex; align-items:center; gap:14px;">
+      <div style="width:36px; height:36px; border-radius:50%; background:#C8622A; color:#fff; font-size:16px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0;">3</div>
+      <div style="font-size:16px; font-weight:600; color:#2C1A0E; line-height:1.4;">Toque em "Salvar imagem"<br><span style="color:#8B4513; font-weight:400; font-size:14px;">vai ficar salva na sua galeria</span></div>
+    </div>
+    <div style="display:flex; align-items:center; gap:14px;">
+      <div style="width:36px; height:36px; border-radius:50%; background:#C8622A; color:#fff; font-size:16px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0;">4</div>
+      <div style="font-size:16px; font-weight:600; color:#2C1A0E; line-height:1.4;">Abra o WhatsApp e mande!<br><span style="color:#8B4513; font-weight:400; font-size:14px;">como se fosse uma foto normal</span></div>
+    </div>
+  </div>
+</div>
+
 <div id="resultado">
   <div class="aviso">
     ✅ Pronto! Segure a imagem abaixo<br>e salve na galeria 📱
@@ -306,8 +328,30 @@
 </div>
 
 <script>
-const emojis = ['🎃','🥕','🌿','🥦','🍠','🌽','🧅','🧄','🫚','🍲'];
 let contador = 0;
+
+function emojiParaSabor(nome) {
+  const n = nome.toLowerCase();
+  if (/frango|galinha|ave/.test(n))         return '🍗';
+  if (/carne|boi|bife|costela|músculo|musculo|patinho|acém|acem/.test(n)) return '🥩';
+  if (/peixe|tilápia|tilapia|salmão|salmao|bacalhau|atum/.test(n)) return '🐟';
+  if (/camarão|camarao|fruto/.test(n))      return '🦐';
+  if (/abóbora|abobora|cabochã|cabochan/.test(n)) return '🎃';
+  if (/cenoura/.test(n))                    return '🥕';
+  if (/abobrinha/.test(n))                  return '🥒';
+  if (/brócolis|brocolis|couve|repolho/.test(n)) return '🥦';
+  if (/batata/.test(n))                     return '🥔';
+  if (/inhame|nhame|cará|cara/.test(n))     return '🍠';
+  if (/milho/.test(n))                      return '🌽';
+  if (/cebola/.test(n))                     return '🧅';
+  if (/alho/.test(n))                       return '🧄';
+  if (/tomate/.test(n))                     return '🍅';
+  if (/espinafre|coentro|salsa|erva/.test(n)) return '🌿';
+  if (/feijão|feijao|lentilha|grão|grao/.test(n)) return '🫘';
+  if (/legume/.test(n))                     return '🥗';
+  if (/caldo|creme/.test(n))                return '🍵';
+  return '🍲';
+}
 
 function adicionarSabor(valor) {
   const lista = document.getElementById('lista-sabores');
@@ -333,9 +377,9 @@ function gerarCard() {
     return;
   }
 
-  const saboresHTML = sabores.map((s, i) => `
+  const saboresHTML = sabores.map(s => `
     <div class="c-sabor">
-      <div class="c-sabor-nome">${emojis[i % emojis.length]} ${s}</div>
+      <div class="c-sabor-nome">${emojiParaSabor(s)} ${s}</div>
     </div>
   `).join('');
 
