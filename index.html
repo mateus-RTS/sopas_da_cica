@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Sopas da Ciça</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,500&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #FDF6EE;
+    font-family: 'Nunito', sans-serif;
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  header {
+    background: #1E0E05;
+    padding: 28px 24px 22px;
+    text-align: center;
+  }
+
+  header .sub {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #C8622A;
+    margin-bottom: 6px;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    color: #F5ECD7;
+    line-height: 1.1;
+  }
+
+  header h1 em {
+    color: #E07A3A;
+    font-style: italic;
+  }
+
+  .section {
+    padding: 28px 20px 0;
+  }
+
+  .section-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #8B4513;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .sabor-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .sabor-row input {
+    flex: 1;
+    font-family: 'Nunito', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 16px 18px;
+    border: 2px solid #E8C8A0;
+    border-radius: 14px;
+    background: #fff;
+    color: #2C1A0E;
+    outline: none;
+    -webkit-appearance: none;
+  }
+
+  .sabor-row input:focus {
+    border-color: #C8622A;
+  }
+
+  .sabor-row input::placeholder {
+    color: #C8A880;
+    font-weight: 400;
+  }
+
+  .btn-remove {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid #E8C8A0;
+    background: #fff;
+    font-size: 22px;
+    color: #C8622A;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .btn-add {
+    width: 100%;
+    padding: 16px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: #8B4513;
+    background: #fff;
+    border: 2px dashed #E8C8A0;
+    border-radius: 14px;
+    cursor: pointer;
+    margin-top: 4px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mensagem-input {
+    width: 100%;
+    font-family: 'Nunito', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    padding: 16px 18px;
+    border: 2px solid #E8C8A0;
+    border-radius: 14px;
+    background: #fff;
+    color: #2C1A0E;
+    outline: none;
+    -webkit-appearance: none;
+  }
+
+  .mensagem-input:focus {
+    border-color: #C8622A;
+  }
+
+  .mensagem-input::placeholder {
+    color: #C8A880;
+    font-weight: 400;
+  }
+
+  .btn-gerar {
+    display: block;
+    width: calc(100% - 40px);
+    margin: 28px 20px 0;
+    padding: 22px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: #fff;
+    background: #C8622A;
+    border: none;
+    border-radius: 18px;
+    cursor: pointer;
+    text-align: center;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 6px 20px rgba(200,98,42,0.35);
+    letter-spacing: 0.3px;
+  }
+
+  .btn-gerar:active {
+    transform: scale(0.97);
+  }
+
+  /* RESULTADO */
+  #resultado {
+    display: none;
+    padding: 28px 20px 0;
+  }
+
+  #resultado .aviso {
+    background: #E8F5E9;
+    border: 2px solid #81C784;
+    border-radius: 14px;
+    padding: 16px 18px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #2E7D32;
+    text-align: center;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  /* CARD GERADO */
+  #card-wrapper {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  }
+
+  #card-gerado {
+    background: #1E0E05;
+    padding: 40px 32px 36px;
+    text-align: center;
+  }
+
+  #card-gerado .c-eyebrow {
+    font-family: 'Nunito', sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #C8622A;
+    margin-bottom: 10px;
+  }
+
+  #card-gerado h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    font-weight: 700;
+    color: #F5ECD7;
+    line-height: 1.05;
+    margin-bottom: 6px;
+  }
+
+  #card-gerado h2 em {
+    font-style: italic;
+    color: #E07A3A;
+  }
+
+  #card-gerado .c-sub {
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+    color: #7A5040;
+    font-style: italic;
+    margin-bottom: 24px;
+  }
+
+  #card-gerado .c-divider {
+    width: 28px;
+    height: 1px;
+    background: #C8622A;
+    margin: 0 auto 22px;
+    opacity: 0.5;
+  }
+
+  #card-gerado .c-label {
+    font-family: 'Nunito', sans-serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #7A5040;
+    margin-bottom: 14px;
+  }
+
+  #card-gerado .c-sabor {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(200,98,42,0.25);
+    border-radius: 12px;
+    padding: 14px 18px;
+    text-align: left;
+    margin-bottom: 10px;
+  }
+
+  #card-gerado .c-sabor-nome {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    color: #F5ECD7;
+    font-weight: 700;
+  }
+
+  #card-gerado .c-cta {
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+    color: #C8622A;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-top: 22px;
+  }
+
+  #card-gerado .c-msg {
+    font-family: 'Nunito', sans-serif;
+    font-size: 12px;
+    color: #5A3020;
+    margin-top: 6px;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="sub">gerador de card</div>
+  <h1>Sopas da <em>Ciça</em></h1>
+</header>
+
+<div class="section">
+  <div class="section-title">🍲 Sabores desta semana</div>
+  <div id="lista-sabores"></div>
+  <button class="btn-add" onclick="adicionarSabor()">＋ Adicionar sabor</button>
+</div>
+
+<div class="section" style="margin-top:24px;">
+  <div class="section-title">💬 Mensagem extra (opcional)</div>
+  <input class="mensagem-input" type="text" id="mensagem" placeholder="Ex: Retirada a partir das 18h" />
+</div>
+
+<button class="btn-gerar" onclick="gerarCard()">✨ Gerar card</button>
+
+<div id="resultado">
+  <div class="aviso">
+    ✅ Pronto! Segure a imagem abaixo<br>e salve na galeria 📱
+  </div>
+  <div id="card-wrapper">
+    <div id="card-gerado"></div>
+  </div>
+</div>
+
+<script>
+const emojis = ['🎃','🥕','🌿','🥦','🍠','🌽','🧅','🧄','🫚','🍲'];
+let contador = 0;
+
+function adicionarSabor(valor) {
+  const lista = document.getElementById('lista-sabores');
+  const id = 'linha-' + contador++;
+  const div = document.createElement('div');
+  div.className = 'sabor-row';
+  div.id = id;
+  div.innerHTML = `
+    <input type="text" placeholder="Nome do sabor" value="${valor || ''}" />
+    <button class="btn-remove" onclick="document.getElementById('${id}').remove()">✕</button>
+  `;
+  lista.appendChild(div);
+  div.querySelector('input').focus();
+}
+
+function gerarCard() {
+  const inputs = document.querySelectorAll('#lista-sabores .sabor-row input');
+  const sabores = Array.from(inputs).map(i => i.value.trim()).filter(Boolean);
+  const msg = document.getElementById('mensagem').value.trim();
+
+  if (!sabores.length) {
+    alert('Escreva pelo menos um sabor antes de gerar!');
+    return;
+  }
+
+  const saboresHTML = sabores.map((s, i) => `
+    <div class="c-sabor">
+      <div class="c-sabor-nome">${emojis[i % emojis.length]} ${s}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('card-gerado').innerHTML = `
+    <div class="c-eyebrow">feita com carinho</div>
+    <h2>Sopas da<br><em>Ciça</em></h2>
+    <p class="c-sub">Caldinho quente, do jeito certo</p>
+    <div class="c-divider"></div>
+    <div class="c-label">sabores desta semana</div>
+    ${saboresHTML}
+    <div class="c-cta">Chama pra pedir 🍲</div>
+    ${msg ? `<div class="c-msg">${msg}</div>` : ''}
+  `;
+
+  const resultado = document.getElementById('resultado');
+  resultado.style.display = 'block';
+  setTimeout(() => resultado.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+}
+
+adicionarSabor('Abóbora cabochã');
+adicionarSabor('Legumes (cenoura, abobrinha e nhame)');
+</script>
+
+</body>
+</html>
