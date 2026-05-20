@@ -161,7 +161,28 @@
     transform: scale(0.97);
   }
 
-  /* RESULTADO */
+  .btn-salvar {
+    display: block;
+    width: calc(100% - 40px);
+    margin: 16px 20px 0;
+    padding: 22px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: #fff;
+    background: #2E7D32;
+    border: none;
+    border-radius: 18px;
+    cursor: pointer;
+    text-align: center;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 6px 20px rgba(46,125,50,0.35);
+    letter-spacing: 0.3px;
+  }
+
+  .btn-salvar:active {
+    transform: scale(0.97);
+  }
   #resultado {
     display: none;
     padding: 28px 20px 0;
@@ -275,6 +296,7 @@
     font-style: italic;
   }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
 
@@ -320,8 +342,11 @@
 
 <div id="resultado">
   <div class="aviso">
-    ✅ Pronto! Segure a imagem abaixo<br>e salve na galeria 📱
+    ✅ Card gerado! Aperte o botão abaixo para salvar 👇
   </div>
+  <button class="btn-salvar" id="btn-salvar" onclick="salvarImagem()">
+    📥 Salvar imagem
+  </button>
   <div id="card-wrapper">
     <div id="card-gerado"></div>
   </div>
@@ -397,6 +422,24 @@ function gerarCard() {
   const resultado = document.getElementById('resultado');
   resultado.style.display = 'block';
   setTimeout(() => resultado.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+}
+
+function salvarImagem() {
+  const btn = document.getElementById('btn-salvar');
+  btn.textContent = '⏳ Salvando...';
+  btn.disabled = true;
+  html2canvas(document.getElementById('card-gerado'), {
+    scale: 2,
+    useCORS: true,
+    backgroundColor: '#1E0E05'
+  }).then(canvas => {
+    const link = document.createElement('a');
+    link.download = 'sopas-da-cica.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    btn.textContent = '📥 Salvar imagem';
+    btn.disabled = false;
+  });
 }
 
 adicionarSabor('Abóbora cabochã');
